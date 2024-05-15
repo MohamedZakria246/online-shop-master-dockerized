@@ -1,0 +1,56 @@
+version: '3.9'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: php_frontend
+    ports:
+      - "8008:80"
+    depends_on:
+      - backend
+      - db
+    environment:
+      ENVIRONMENT: "development" # Set environment variable
+    networks:
+      - web-app
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: php_backend
+    ports:
+      - "9000:80"
+    environment:
+      ENVIRONMENT: "development" # Set environment variable
+    networks:
+      - web-app
+
+  admin:
+    build:
+      context: ./admin
+      dockerfile: Dockerfile
+    container_name: php_admin
+    ports:
+      - "7000:80"
+    environment:
+      ENVIRONMENT: "development" # Set environment variable
+    networks:
+      - web-app
+
+  db:
+    image: postgres
+    container_name: postgres_container
+    ports:
+      - "4321:5432"
+    environment:
+      - POSTGRES_USER=testUser
+      - POSTGRES_PASSWORD=mypassword123
+      - POSTGRES_DB=testUser
+    networks:
+      - web-app-
+
+networks:
+  web-app-net:

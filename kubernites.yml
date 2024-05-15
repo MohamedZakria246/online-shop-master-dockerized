@@ -1,0 +1,367 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: php-app-deployment
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: php-app
+#   template:
+#     metadata:
+#       labels:
+#         app: php-app
+#     spec:
+#       containers:
+#         - name: php-app-container
+#           image: php:latest
+#           ports:
+#             - containerPort: 80
+#           volumeMounts:
+#             - name: php-app-storage
+#               mountPath: /var/www/html
+#       volumes:
+#         - name: php-app-storage
+#           emptyDir: {}
+
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: php-app-service
+# spec:
+#   selector:
+#     app: php-app
+#   ports:
+#     - protocol: TCP
+#       port: 8008
+#       targetPort: 8080
+
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: mysql-db-deployment
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: mysql-db
+#   template:
+#     metadata:
+#       labels:
+#         app: mysql-db
+#     spec:
+#       containers:
+#         - name: mysql-db-container
+#           image: mysql:latest
+#           env:
+#             - name: MYSQL_ROOT_PASSWORD
+#               value: "root"
+#             - name: MYSQL_DATABASE
+#               value: "database"
+#             - name: MYSQL_USER
+#               value: "edureka"
+#             - name: MYSQL_PASSWORD
+#               value: "admin"
+#           ports:
+#             - containerPort: 3306
+#           volumeMounts:
+#             - name: mysql-db-storage
+#               mountPath: /var/lib/mysql
+#       volumes:
+#         - name: mysql-db-storage
+#           emptyDir: {}
+
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: mysql-db-service
+# spec:
+#   selector:
+#     app: mysql-db
+#   ports:
+#     - protocol: TCP
+#       port: 3306
+#       targetPort: 3306
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend-container
+          image: frontend_service
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  selector:
+    app: frontend
+  ports:
+    - protocol: TCP
+      port: 8008
+      targetPort: 80
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-management-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-management
+  template:
+    metadata:
+      labels:
+        app: user-management
+    spec:
+      containers:
+        - name: user-management-container
+          image: user_management_service
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-management-service
+spec:
+  selector:
+    app: user-management
+  ports:
+    - protocol: TCP
+      port: 8010
+      targetPort: 80
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-catalog-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product-catalog
+  template:
+    metadata:
+      labels:
+        app: product-catalog
+    spec:
+      containers:
+        - name: product-catalog-container
+          image: product_catalog_service
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-catalog-service
+spec:
+  selector:
+    app: product-catalog
+  ports:
+    - protocol: TCP
+      port: 8020
+      targetPort: 80
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cart-management-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cart-management
+  template:
+    metadata:
+      labels:
+        app: cart-management
+    spec:
+      containers:
+        - name: cart-management-container
+          image: cart_management_service
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cart-management-service
+spec:
+  selector:
+    app: cart-management
+  ports:
+    - protocol: TCP
+      port: 8030
+      targetPort: 80
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-processing-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-processing
+  template:
+    metadata:
+      labels:
+        app: order-processing
+    spec:
+      containers:
+        - name: order-processing-container
+          image: order_processing_service
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-processing-service
+spec:
+  selector:
+    app: order-processing
+  ports:
+    - protocol: TCP
+      port: 8040
+      targetPort: 80
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-processing-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment-processing
+  template:
+    metadata:
+      labels:
+        app: payment-processing
+    spec:
+      containers:
+        - name: payment-processing-container
+          image: payment_processing_service
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-processing-service
+spec:
+  selector:
+    app: payment-processing
+  ports:
+    - protocol: TCP
+      port: 8050
+      targetPort: 80
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend-container
+          image: backend_service
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 9000
+      targetPort: 80
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-db-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-db
+  template:
+    metadata:
+      labels:
+        app: mysql-db
+    spec:
+      containers:
+        - name: mysql-db-container
+          image: mysql:latest
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "root"
+            - name: MYSQL_DATABASE
+              value: "database"
+            - name: MYSQL_USER
+              value: "edureka"
+            - name: MYSQL_PASSWORD
+              value: "admin"
+          ports:
+            - containerPort: 3306
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-db-service
+spec:
+  selector:
+    app: mysql-db
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
